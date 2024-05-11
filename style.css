@@ -1,0 +1,200 @@
+
+body
+{
+    background-color: #f5f5f5;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+#form-datos
+{
+    width: 100%;
+}
+
+#div-tabla
+{
+    margin-top: 10px;
+    
+}
+
+#contenedor
+{
+    
+}
+
+
+#select-personas
+{
+    width: 745px;
+    height: 35px;
+    color: #FF4C4C;
+    margin-left: 30px;
+    font-size: 18px;
+}
+
+
+
+main
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    width: 800px;
+    margin: 15px auto;
+    border-radius: 30px;
+    box-shadow: 2px 2px 10px #FF4C4C;
+    
+}
+table
+{
+    width: 750px;
+    background-color: white;
+    text-align: center;
+}
+
+#agregar-form-abm
+{
+    margin-top: 10px;
+    width: 200px;
+    margin-left: 270px;
+    height: 30px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    color: white;
+    background-color:  #FF4C4C;
+}
+
+thead
+{
+    background-color: #f5f5f5;
+}
+
+#form-abm
+{
+    width: 800px;
+    height:620px;
+    
+    position: absolute;
+    z-index: 10;
+    border-radius: 30px;
+    background-color: white;
+    box-shadow: 2px 2px 10px #FF4C4C;
+}
+
+#div-edad-promedio
+{
+    margin-top: 55px;
+
+}
+
+h1 
+{
+    font-size: 30px;
+    text-align: center;
+    margin-top: 15px;
+    height: 30px;
+    color: #FF4C4C;
+}
+
+
+
+#agregar-atributos
+{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    
+}
+
+
+
+.inputs-form
+{
+    width: 600px;
+    font-size: 18px;
+    color: #FF4C4C;
+}
+
+.checkboxs
+{
+    margin-left: 35px;
+}
+
+.botones-azules
+{
+    margin-top: 25px;
+    margin-left: 28px;
+    width: 100px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    color: white;
+    
+    background-color:  #FF4C4C;
+}
+
+#btn-eliminar
+{
+    margin: 0px 203px 0px 200px;
+}
+
+
+#text-filtrar
+{
+    
+    margin-left: 30px;
+}
+
+#text-calcular-edad
+{
+    margin-left: 30px;
+    margin-top: -30px;
+    
+}
+#div-edad
+{
+    margin-bottom: 50px;
+}
+#text-mostrar-columnas
+{
+    margin-left: 5px;
+    margin-top: 0px;
+}
+#calcular-edad
+{
+    width: 740px;
+    height: 25px;
+    margin-left: 28px;
+    font-size: 18px;
+    padding-left: 5px;
+    color: #FF4C4C;
+}
+
+.inputs-form
+{
+    width: 730px;
+    height: 30px;
+    margin-left: -70px;
+}
+
+.text
+{
+    height: 10px;
+    margin-left: -60px;
+}
+
+p
+{
+    color: #FF4C4C;
+}
+
+#select-tipo
+{
+    width: 738px;
+    height: 40px;
+    font-size: 18px;
+    color: #FF4C4C;
+}

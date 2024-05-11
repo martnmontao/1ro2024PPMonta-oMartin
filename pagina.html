@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" type = "text/css" href = "style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <main>
+        <div id ="contenedor">
+            <div id = "form-datos" >
+                
+                <p id ="text-filtrar"><b>Filtrar por:</b></p>
+                <select id = "select-personas">
+                    <option value = "1">Todos</option>
+                    <option value = "2">Ciudadano</option>
+                    <option value = "3">Extranjeros</option>
+                </select>
+                
+            </div>
+            <div id = "div-edad-promedio">
+                <p id ="text-calcular-edad"><b>Calcular Edad Promedio:</b></p>
+                <input type="text" id="calcular-edad"readonly>
+                <button class = "botones-azules" id="btn-calcular-edad">Calcular</button>
+            </div>
+        </div>
+        <div id = "div-tabla">
+            <p id = "text-mostrar-columnas"><b>Mostrar Columnas</b></p>
+            <input type="checkbox" class="checkboxs" id = "chk-Id" >ID
+            <input type="checkbox" class="checkboxs" id = "chk-Nombre">Nombre
+            <input type="checkbox" class="checkboxs" id = "chk-Apellido">Apellido
+            <input type="checkbox" class="checkboxs" id = "chk-FechaDeNacimiento">Fecha de nacimiento
+            <input type="checkbox" class="checkboxs" id = "chk-Dni">Dni
+            <input type="checkbox" class="checkboxs" id = "chk-PaisDeOrigen">PaisOrigen
+
+            <table border="1" id = "tabla-personas">
+                <thead>
+    
+                </thead>
+                <tbody id = "body-tabla">
+                    
+                </tbody>
+            </table>
+            <button id ="agregar-form-abm">Agregar</button>
+        </div>
+        <div id = "form-abm">
+            <h1>Formulario ABM</h1>
+            <form id = "agregar-atributos">
+                <div>
+                    <p class="text"><b>Id:</b></p>
+                    <input type="text" class="inputs-form" id = "input-id" readonly required>
+                </div>
+                <div>
+                    <p class="text"> <b>Nombre:</b></p>
+                    
+                    <input type="text" class="inputs-form" id = "input-nombre" required>
+                </div>
+                <div>
+                    <p class="text"><b>Apellido:</b></p>
+                    <input type="text" class="inputs-form" id = "input-apellido" required>
+                </div>
+                <div>
+                    <p class="text"><b>Tipo:</b></p>
+                    <select class="inputs-form" id= "select-tipo">
+                        <option value = "1">Ciudadano</option>
+                        <option value= "2">Extranjero</option>
+                    </select>
+                </div>
+                <div >
+                    <p class="text"><b>Fecha de nacimiento:</b></p>
+                    <input type="text" class="inputs-form" id = "input-fechadenacimiento" placeholder="AÑODIAMES EJ: 200030312">
+                </div>
+                <div >
+                    <p class="text"><b id = "text-dni">Dni</b></p>
+                    <input type="text" class="inputs-form" id = "input-dni-paisorigen" placeholder="">
+                </div>
+                
+            </form>
+            <button class = "botones-azules"  id = "btn-aceptar"type="submit">Aceptar</button>
+            <button class = "botones-azules"  id = "btn-eliminar"type="submit">Eliminar</button>
+            <button class = "botones-azules" id = "btn-cancelar">Cancelar</button>
+            
+        </div>
+    </main>
+
+
+
+
+    <script>
+        class Persona
+        {
+            constructor(id, nombre, apellido, fecha)
+            {
+                if(id != null && apellido != null && nombre != null)
+                {
+                    this.id = id;
+                    this.nombre = nombre;
+                    this.apellido = apellido;
+                }
+                else
+                {
+                    alert("Complete los campos.")
+                    throw new Error("Error.");
+                }
+                this.fecha = fecha;
+            }
+
+            toString()
+            {
+                return 0;
+            }   
+
+           
+
+        }
+
+        class Ciudadano extends Persona
+        {
+            constructor(id, nombre, apellido, fecha, dni)
+            {
+                super(id,nombre,apellido,fecha);
+                if(dni > 0)
+                {
+                    this.dni = dni;
+                }
+                else
+                {   
+                    alert("Complete los campos.");
+                    throw new Error("Error");
+                }
+            }
+
+            toString(){};
+
+        
+
+        }
+
+
+        class Extranjero extends Persona
+        {
+            constructor(id, nombre, apellido, fecha, paisOrigen)
+            {
+                super(id,nombre,apellido,fecha);
+                if(paisOrigen != null)
+                {
+                    this.paisOrigen = paisOrigen;
+                                  
+                }
+                else
+                {   
+                    alert("Complete los campos.");
+                    throw new Error("Error");
+                }
+            }
+
+            toString(){return 0};
+           
+        }
+
+
+        //CONEXION A ETIQUETAS
+        const chkNombre = document.getElementById("chk-Nombre");
+        const chkId = document.getElementById("chk-Id");
+        const chkApellido = document.getElementById("chk-Apellido");
+        const chkFechaDeNacimiento = document.getElementById("chk-FechaDeNacimiento");
+        const chkDni = document.getElementById("chk-Dni");
+        const chkPaisDeOrigen = document.getElementById("chk-PaisDeOrigen");
+
+        const inputId = document.getElementById("input-id");
+        const inputNombre = document.getElementById("input-nombre");
+        const inputApellido = document.getElementById("input-apellido");
+        const inputFechaDeNacimiento = document.getElementById("input-fechadenacimiento");
+        const inputDniPaisOrigen = document.getElementById("input-dni-paisorigen");
+        
+        const pDni = document.getElementById("text-dni");
+
+        const stringDatos = '[{"id":1,"apellido":"Serrano","nombre":"Horacio","fechaNacimiento":19840103,"dni":45876942},{"id":2,"apellido":"Casas","nombre":"Julian","fechaNacimiento":19990723,"dni":98536214},{"id":3,"apellido":"Galeano","nombre":"Julieta","fechaNacimiento":20081103,"dni":74859612},{"id":4,"apellido":"Molina","nombre":"Juana","fechaNacimiento":19681201,"paisOrigen":"Paraguay"},{"id":5,"apellido":"Barrichello","nombre":"Rubens","fechaNacimiento":19720523,"paisOrigen":"Brazil"},{"id":666,"apellido":"Hkkinen","nombre":"Mika","fechaNacimiento":19680928,"paisOrigen":"Finlandia"}]';
+        const lista = JSON.parse(stringDatos);
+        const listaCheckbox = [chkId,chkNombre,chkApellido,chkFechaDeNacimiento,chkDni,chkPaisDeOrigen];
+        const listaInputs = [inputId, inputNombre, inputApellido, inputFechaDeNacimiento, inputDniPaisOrigen];
+        const selectPersonas = document.getElementById("select-personas");
+        const selectTipos = document.getElementById("select-tipo");
+        const elemento = document.getElementsByClassName("rows");
+        const divForm = document.getElementById("form-abm");
+        const btnCalcularEdad = document.getElementById("btn-calcular-edad");
+        const btnCancelarForm = document.getElementById("btn-cancelar");
+        const btnAgregarForm = document.getElementById("agregar-form-abm");
+        const btnAceptar = document.getElementById("btn-aceptar");
+        const btnEliminar = document.getElementById("btn-eliminar");
+        
+
+        let listaExtranjeros = lista.filter(persona => typeof(persona.paisOrigen) == "string");
+        
+        listaExtranjeros = listaExtranjeros.map(persona => new Extranjero(persona.id, persona.nombre,persona.apellido,persona.fechaNacimiento,persona.paisOrigen));
+        let listaCiudadano = lista.filter(persona => persona.dni > 0);
+        listaCiudadano = listaCiudadano.map(persona => new Ciudadano(persona.id, persona.nombre,persona.apellido,persona.fechaNacimiento,persona.dni));
+        
+        function obtenerEdad(fechaNacimiento)
+        {
+            var fecha = fechaNacimiento.toString();
+            var nacimientoPersona = new Date(fecha.substring(0,4), fecha.substring(6,8), fecha.substring(4,6));
+            var fechaActual = new Date();
+
+            var edad = fechaActual.getFullYear() - nacimientoPersona.getFullYear();
+            return edad;
+
+        }
+        function obtenerFecha(fechaNacimiento)
+        {
+            var fecha = fechaNacimiento.toString();
+            var nacimientoPersona = fecha.substring(0,4)+"/"+ fecha.substring(6,8)+"/"+fecha.substring(4,6);
+            
+            return nacimientoPersona;
+
+        }
+
+      
+        
+        
+        let listaPersonas = [];
+        listaCiudadano.forEach(element => {
+            listaPersonas.push(element);
+        });
+
+        listaExtranjeros.forEach(element => {
+            listaPersonas.push(element);
+        });
+        
+        crearTabla(listaPersonas);        
+
+        divForm.style.display = "none";
+        
+        
+        //EVENTOS
+        selectPersonas.addEventListener("change", mostrarTablas);
+        btnCalcularEdad.addEventListener("click", function(){
+            if(selectPersonas.value === "1")
+            {
+                calcularEdadPromedio(listaPersonas);
+            }
+            else if(selectPersonas.value === "2")
+            {
+                calcularEdadPromedio(listaCiudadano);
+            }
+            else
+            {
+                calcularEdadPromedio(listaExtranjeros);
+            }
+            
+        });
+        btnAgregarForm.addEventListener("click", mostrarOcultarForm);
+        btnCancelarForm.addEventListener("click", mostrarOcultarForm);
+        selectTipos.addEventListener("change",function()
+        {
+            switch(selectTipos.value)
+            {
+                case "1":
+                    pDni.textContent = "Dni";
+                break
+                case "2":
+                    pDni.textContent = "Pais de origen";
+                break;
+            }
+        });
+
+
+
+        btnAceptar.addEventListener("click", function(){
+            let persona;
+            if(inputId.readOnly)
+            {
+                
+                listaPersonas.forEach(element => {
+                    if(element.id == inputId.value)
+                    {
+                        if(!isNaN(parseInt(inputFechaDeNacimiento.value)))
+                        {
+                            
+                            if(selectTipos.value == "1")
+                            {
+                                element.dni = inputDniPaisOrigen.value;
+                                element.paisOrigen = "";
+                                
+                                
+
+                            }
+                            else
+                            {
+                                
+                                element.dni = "";
+                                element.paisOrigen = inputDniPaisOrigen.value;
+                                
+                            }
+                            element.nombre = inputNombre.value;
+                            element.apellido = inputApellido.value;
+                            element.fechaDeNacimiento = parseInt(inputFechaDeNacimiento.value);
+                            crearTabla(listaPersonas);
+
+                        }
+                        else
+                        {
+                            alert("Ingrese la fecha solo con digitos. Ningún caracter especial.");
+                        }
+                    }
+                });
+            }
+            else
+            {
+                if(!isNaN(parseInt(inputFechaDeNacimiento.value)))
+                {
+                    var bandera = 0;
+                    listaPersonas.forEach(element => {
+                        if(inputId.value == element.id)
+                        {
+                            bandera = 1;
+                        }
+                    });
+                    if(bandera == 0)
+                    {
+                        if(selectTipos.value == "1")
+                        {
+                            
+                            persona = new Ciudadano(inputId.value,inputNombre.value,inputApellido.value,parseInt(inputFechaDeNacimiento.value), inputDniPaisOrigen.value);
+                            listaPersonas.push(persona);
+                            listaCiudadano.push(persona);
+                            crearTabla(listaPersonas);
+                        }
+                        else
+                        {
+                            
+                            
+                            persona = new Extranjero(inputId.value,inputNombre.value,inputApellido.value,parseInt(inputFechaDeNacimiento.value), inputDniPaisOrigen.value);
+                            listaPersonas.push(persona);
+                            listaExtranjeros.push(persona);
+                            crearTabla(listaPersonas);
+                        }
+                    }
+                    else
+                    {
+                        alert("El ID debe ser único.");
+                    }
+                    
+                }
+                else
+                {
+                    alert("Ingrese la fecha solo con digitos. Ningún carácter especial.");
+                }
+                
+
+                
+                
+            }
+            selectPersonas.value = "1";
+            mostrarOcultarForm();
+        });
+
+
+        chkId.addEventListener("change", function()
+        {
+            mostrarColumna(chkId, "col-id");
+        }
+        );
+        chkNombre.addEventListener("change", function()
+            {
+                mostrarColumna(chkNombre, "col-nombre");
+            }
+        );
+        chkApellido.addEventListener("change", function()
+            {
+                mostrarColumna(chkApellido, "col-apellido");
+            }
+        );
+        chkFechaDeNacimiento.addEventListener("change", function()
+            {
+                mostrarColumna(chkFechaDeNacimiento, "col-fechanacimiento");
+            }
+        );
+        chkDni.addEventListener("change", function()
+            {
+                mostrarColumna(chkDni, "col-dni");
+            }
+        );
+        chkPaisDeOrigen.addEventListener("change", function()
+            {
+                mostrarColumna(chkPaisDeOrigen, "col-paisorigen");
+            }
+        );
+        
+        btnEliminar.addEventListener("click", function()
+        {
+            
+            eliminarPorId(inputId.value);
+        });
+
+     
+        function eliminarPorId(id) {
+            for (let i = 0; i < listaPersonas.length; i++) {
+                if (listaPersonas[i].id == id) {
+                    listaPersonas.splice(i, 1);
+                }
+            }
+            for (let i = 0; i < listaCiudadano.length; i++) {
+                if (listaCiudadano[i].id == id) {
+                    listaCiudadano.splice(i, 1);
+                }
+            }
+            for (let i = 0; i < listaExtranjeros.length; i++) {
+                if (listaExtranjeros[i].id == id) {
+                    listaExtranjeros.splice(i, 1);
+                }
+            }
+            
+            divForm.style.display = "none";
+            crearTabla(listaPersonas);
+        
+        }
+
+    
+        function ordenarPersonas(ordenamiento)
+        {
+            let mostrar = [];
+            switch(selectPersonas.value)
+            {
+                case "2":
+                    mostrar = [...listaCiudadano];
+                    break;
+                case "3":
+                    mostrar = [...listaExtranjeros]; 
+                    break;
+                default:
+                    mostrar = [...listaPersonas];
+                    break;
+            }
+            switch(ordenamiento)
+            {
+                case "id":
+                    mostrar = mostrar.sort((a,b) => a.id-b.id);
+                    break;
+                case "nombre":
+                    mostrar = mostrar.sort((a,b) => a.nombre.localeCompare(b.nombre));
+                    break;
+                case "apellido":
+                    mostrar = mostrar.sort((a,b) => a.apellido.localeCompare(b.apellido));  
+                    break;
+                case "fechadenacimiento":
+                    mostrar = mostrar.sort((a,b) => obtenerEdad(a.fecha)-obtenerEdad(b.fecha));
+                    break;
+                case "dni":
+                    mostrar = mostrar.sort((a,b) => a.dni - b.dni)
+                    break;
+                case "paisdeorigen":
+                    
+                            mostrar = mostrar.sort((element, element2) => {
+
+                            if (!element.paisOrigen && !element2.paisOrigen) {
+                            return 0; // Ambos elementos son iguales
+                            } else if (!element.paisOrigen) {
+                            return 1; // Si element no tiene país de origen, se pone despues del element 2
+                            } else if (!element2.paisOrigen) {
+                            return -1; // Si element2 no tiene país de origen, se pone antes de element 2
+                            } else {
+                            return element.paisOrigen.localeCompare(element2.paisOrigen); // Comparación normal
+                            }
+                        });
+
+                        
+
+                    break;
+
+            }
+            crearTabla(mostrar);
+
+        }    
+        divForm.style.display = "none";
+        obtenerFilas();   
+        listaCheckbox.forEach(element => {
+            element.checked = true;
+        });
+        
+
+        //FUNCIONES
+        function obtenerFilas()
+        {
+            var table = document.getElementById("tabla-personas");//Vinculo a mi tabla
+            var filas = table.getElementsByTagName("tr");//Vinculo a todas las etiquetas tr
+            
+            //Agrego el evento click a cada fila
+            for (var i = 1; i < filas.length; i++) {  //Empezamos desde 1 asi omitimos encabezado
+                filas[i].addEventListener("click", function() {
+                    divForm.style.display = "block";
+                    var celdas = this.getElementsByTagName("td"); //obtengo todas las celdas de la fila clickeada
+                    var datos = [];// [1 , martin , montaño]
+    
+                    //Cada contenido de las celdas, lo agrego a mi lista de datos
+                    for (var j = 0; j < celdas.length; j++) {
+                        
+                        datos.push(celdas[j].textContent);
+                    }
+                    //A cada input de mi lista de inputs, le agrego los datos correspondientes 
+                    for(var k = 0; k < listaInputs.length; k++)
+                    {
+
+                        listaInputs[k].value = datos[k];
+                    }
+                    
+                    
+                        inputId.readOnly = true;
+                        btnAceptar.textContent = "Modificar";
+                });
+            } 
+        }
+
+
+
+        function mostrarOcultarForm()
+        {
+
+            if(divForm.style.display === "none")
+            {
+                divForm.style.display = "block";
+                listaInputs.forEach(element => {
+                    element.value = "";
+                });
+                btnAceptar.textContent = "Crear";
+                inputId.readOnly = false;
+            }
+            else
+            {
+                divForm.style.display = "none";
+            }
+        }
+        function desmarcarChk()
+        {
+            listaCheckbox.forEach(chk => {chk.checked = true});
+        }
+        function calcularEdadPromedio(lista)
+        {
+            
+            let edadTotal = lista.map(elemento => obtenerEdad(elemento.fecha));
+            edadTotal = edadTotal.reduce((acumulador, actual) => acumulador + actual , 0)
+            let edadPromedio = edadTotal / lista.length;
+            
+            document.getElementById("calcular-edad").value = parseInt(edadPromedio);
+        }    
+        function crearTabla(lista)
+        {
+            const table = document.getElementById("tabla-personas");
+            table.innerHTML = "";
+            table.style.borderCollapse = "collapse";
+            const listaEncabezado = ["ID","Nombre", "Apellido", "FechaNacimiento", "Dni", "PaisOrigen"];
+
+            const fila = document.createElement("tr");
+            listaEncabezado.forEach(elemento => {
+                const encabezado = document.createElement("th");
+                encabezado.style.backgroundColor = "#f5f5f5";
+                encabezado.className ="col-"+elemento.toLocaleLowerCase();//col-id
+                encabezado.style.border = "0";
+                const botonesHead = document.createElement("button");
+                botonesHead.style.width = "100%";
+                botonesHead.style.color = "#FF4C4C";
+                botonesHead.style.fontSize = "18px";
+                botonesHead.style.border = "none";
+                botonesHead.id = "btn-"+elemento.toLowerCase();
+                botonesHead.className="col-"+elemento.toLowerCase();
+                botonesHead.textContent = elemento;
+                encabezado.appendChild(botonesHead);
+                fila.appendChild(encabezado);
+                table.appendChild(fila);
+            });
+            
+            lista.forEach(element => {
+                 
+                const row = document.createElement("tr");
+                row.className = "rows";
+                //ID
+                
+                const cellID = document.createElement("td");
+                cellID.textContent = element.id;
+                cellID.className = "col-id";
+                row.appendChild(cellID);
+
+              
+                //NOMBRE
+                const cellNombre = document.createElement("td");
+                cellNombre.textContent = element.nombre;
+                cellNombre.className = "col-nombre";
+
+                row.appendChild(cellNombre);
+                //APELLIDO
+                const cellApellido = document.createElement("td");
+                cellApellido.textContent = element.apellido;
+                cellApellido.className = "col-apellido";
+
+                row.appendChild(cellApellido)
+                //Fecha de nacimiento
+                const cellFechaDeNacimiento = document.createElement("td");
+                cellFechaDeNacimiento.textContent = obtenerFecha(element.fecha);
+                cellFechaDeNacimiento.className = "col-fechanacimiento";
+
+                row.appendChild(cellFechaDeNacimiento);
+                //Dni
+                const cellDni = document.createElement("td");
+                cellDni.textContent = element.dni;
+                cellDni.className = "col-dni";
+
+                row.appendChild(cellDni);
+                //Pais de origen
+                const cellPaisDeOrigen = document.createElement("td");
+                cellPaisDeOrigen.textContent = element.paisOrigen;
+                cellPaisDeOrigen.className = "col-paisorigen";
+                row.appendChild(cellPaisDeOrigen);
+
+                table.appendChild(row);
+            });
+
+            document.getElementById("btn-id").addEventListener("click", function(){
+                ordenarPersonas("id");
+            });
+
+            document.getElementById("btn-nombre").addEventListener("click", function(){
+            ordenarPersonas("nombre");
+            });
+            document.getElementById("btn-apellido").addEventListener("click", function(){
+            ordenarPersonas("apellido");
+            });
+            document.getElementById("btn-fechanacimiento").addEventListener("click", function(){
+            ordenarPersonas("fechadenacimiento");
+            });
+            document.getElementById("btn-dni").addEventListener("click", function(){
+            ordenarPersonas("dni");
+            });
+            document.getElementById("btn-paisorigen").addEventListener("click", function(){
+            ordenarPersonas("paisdeorigen");
+            });
+
+            obtenerFilas();            
+        }
+        function mostrarTablas()
+        {
+            
+            switch(selectPersonas.value)
+            {
+                case "1":
+                    desmarcarChk();
+                    crearTabla(listaPersonas);
+                break;
+                case "2":
+                    desmarcarChk();
+                    
+                    crearTabla(listaCiudadano);
+                break;
+                default:
+                    desmarcarChk();
+                    crearTabla(listaExtranjeros);
+                break;
+            }
+          
+            
+            
+        }
+        function mostrarColumna(checkbox, colClass) 
+        {
+        // Obtiene todos los elementos que tienen la clase de la columna específica
+            var columnsClass = document.getElementsByClassName(colClass);
+
+            // Si el checkbox no está marcado, no ocultar la columna, si no, ocultarla
+            
+          
+            for (var i = 0; i < columnsClass.length; i++) {
+                columnsClass[i].style.display = checkbox.checked ? '' : 'none';
+            }
+        }
+   
+        
+
+
+
+    </script>
+</body>
+</html>
